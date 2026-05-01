@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemySpawnStageData" format=3 uid="uid://cy0ioyc0ffajn"]
+
+[ext_resource type="Script" uid="uid://dblxonavpsij3" path="res://enemy/spawner/enemy_spawn_stage_data.gd" id="1_stage_script"]
+[ext_resource type="Script" uid="uid://dgxtgtffb3f0c" path="res://enemy/spawner/enemy_spawn_wave_data.gd" id="2_wave_script"]
+[ext_resource type="Resource" uid="uid://c3uwya8xq54yt" path="res://enemy/waves/wave_drone_v_five.tres" id="3_4tm0e"]
+[ext_resource type="Resource" uid="uid://c1nifnci5ce52" path="res://enemy/waves/wave_shooters_line_four.tres" id="3_wave_1"]
+[ext_resource type="Resource" uid="uid://d2rhvbc2jkjoo" path="res://enemy/waves/wave_exploders_v_five.tres" id="4_wave_2"]
+[ext_resource type="Resource" uid="uid://b2w8aydmmms4y" path="res://enemy/waves/wave_drone_v_8_.tres" id="4_y81sx"]
+[ext_resource type="Resource" uid="uid://bbd10hgh0yyg8" path="res://enemy/waves/wave_kamikaze_diagonaldown_six.tres" id="5_wave_3"]
+[ext_resource type="Resource" uid="uid://c68iyc82frorx" path="res://enemy/waves/wave_shooters_diagonalup_six.tres" id="6_5bnb8"]
+[ext_resource type="Resource" uid="uid://b8fc5edl5tw5k" path="res://enemy/waves/wave_kamikaze_v_five.tres" id="8_k1jsv"]
+[ext_resource type="Resource" uid="uid://bcf1bhhkbe4do" path="res://enemy/waves/wave_shooters_v_five.tres" id="9_jo2ei"]
+[ext_resource type="Resource" uid="uid://bp3onn1vgr4j6" path="res://enemy/waves/wave_exploders_v_12_.tres" id="10_y81sx"]
+[ext_resource type="Resource" uid="uid://20np48bqk8aq" path="res://enemy/waves/wave_kamikaze_line_four.tres" id="11_5ti3r"]
+[ext_resource type="Resource" uid="uid://deqhhwlu75cxd" path="res://enemy/waves/wave_drone_diagonaldown_six.tres" id="12_r36hk"]
+
+[resource]
+script = ExtResource("1_stage_script")
+waves = Array[ExtResource("2_wave_script")]([ExtResource("4_y81sx"), ExtResource("8_k1jsv"), ExtResource("3_wave_1"), ExtResource("4_wave_2"), ExtResource("12_r36hk"), ExtResource("11_5ti3r"), ExtResource("3_4tm0e"), ExtResource("6_5bnb8"), ExtResource("9_jo2ei"), ExtResource("5_wave_3"), ExtResource("10_y81sx")])

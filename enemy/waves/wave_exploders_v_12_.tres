@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="EnemySpawnWaveData" format=3 uid="uid://bp3onn1vgr4j6"]
+
+[ext_resource type="PackedScene" uid="uid://0nehn4ojitjw" path="res://enemy/variations/enemy_exploder.tscn" id="1_rr4fu"]
+[ext_resource type="Script" uid="uid://dgxtgtffb3f0c" path="res://enemy/spawner/enemy_spawn_wave_data.gd" id="2_gvj2c"]
+[ext_resource type="Script" uid="uid://c2i2t3261ovkv" path="res://enemy/spawner/enemy_spawn_slot_data.gd" id="3_co67n"]
+
+[sub_resource type="Resource" id="Resource_7oh7p"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(990, 60)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_1wkuk"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(940, 75)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_sgfkn"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(890, 95)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_dout0"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(840, 120)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_7wsu4"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(790, 150)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_u64g6"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(740, 180)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_jn3ox"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(740, 210)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_pdjw0"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(790, 240)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_q3jwe"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(840, 270)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_sk3j0"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(890, 295)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_nk4r0"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(940, 315)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_kwnm1"]
+script = ExtResource("3_co67n")
+spawn_position = Vector2(990, 330)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[resource]
+script = ExtResource("2_gvj2c")
+enemy_scene = ExtResource("1_rr4fu")
+slots = Array[ExtResource("3_co67n")]([SubResource("Resource_7oh7p"), SubResource("Resource_1wkuk"), SubResource("Resource_sgfkn"), SubResource("Resource_dout0"), SubResource("Resource_7wsu4"), SubResource("Resource_u64g6"), SubResource("Resource_jn3ox"), SubResource("Resource_pdjw0"), SubResource("Resource_q3jwe"), SubResource("Resource_sk3j0"), SubResource("Resource_nk4r0"), SubResource("Resource_kwnm1")])
+metadata/_custom_type_script = "uid://dgxtgtffb3f0c"

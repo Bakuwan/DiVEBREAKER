@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://cedlt7rfylybk"]
+
+[ext_resource type="Script" uid="uid://dimg5q8q31x2i" path="res://enemy/boss/boss.gd" id="1_43o2b"]
+[ext_resource type="Texture2D" uid="uid://dyedbkswjwyei" path="res://assets/the_dive_is_freedom.png" id="1_lglxd"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hp57m"]
+radius = 12.0
+height = 56.0
+
+[node name="Boss" type="Area2D" unique_id=714128407 groups=["enemy"]]
+collision_layer = 2
+script = ExtResource("1_43o2b")
+max_hp = 125.0
+phase_two_threshold = 0.75
+top_hold_position_x_min = 430.0
+top_hold_position_x_max = 560.0
+top_hold_position_y_min = 80.0
+top_hold_position_y_max = 140.0
+bottom_hold_position_x_min = 430.0
+bottom_hold_position_x_max = 560.0
+bottom_hold_position_y_min = 220.0
+bottom_hold_position_y_max = 280.0
+bullet_hell_pulse_interval = 0.5
+bullet_hell_bullet_count = 16
+bullet_hell_bullet_speed = 200.0
+bullet_hell_angle_offset_step = 10.0
+bullet_hell_fan_pulse_interval = 0.5
+bullet_hell_fan_bullet_count = 18
+bullet_hell_fan_sweep_angle = 25.0
+bullet_hell_tracking_burst_interval = 0.5
+bullet_hell_tracking_spread_angle = 25.0
+bullet_hell_tracking_bullet_speed = 200.0
+spawn_invulnerable_until_visible = false
+lootbox_drop_chance = 0.0
+healing_drop_chance = 0.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1602246771]
+texture = ExtResource("1_lglxd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=883683777]
+position = Vector2(0, 3)
+shape = SubResource("CapsuleShape2D_hp57m")

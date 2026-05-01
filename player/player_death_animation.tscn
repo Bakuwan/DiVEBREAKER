@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://55axws5x20fh"]
+
+[ext_resource type="Texture2D" uid="uid://dcx0dd8pdqeh6" path="res://assets/Free Smoke Fx  Pixel 05.png" id="1_oqlke"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_clxdq"]
+atlas = ExtResource("1_oqlke")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mk1f1"]
+atlas = ExtResource("1_oqlke")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_itfrm"]
+atlas = ExtResource("1_oqlke")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yaka6"]
+atlas = ExtResource("1_oqlke")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hj1ru"]
+atlas = ExtResource("1_oqlke")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t3x5u"]
+atlas = ExtResource("1_oqlke")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_myfyu"]
+atlas = ExtResource("1_oqlke")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xivi0"]
+atlas = ExtResource("1_oqlke")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3o5e0"]
+atlas = ExtResource("1_oqlke")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ig3ah"]
+atlas = ExtResource("1_oqlke")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s3jg4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_clxdq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mk1f1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_itfrm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yaka6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hj1ru")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t3x5u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_myfyu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xivi0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3o5e0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ig3ah")
+}],
+"loop": true,
+"name": &"default",
+"speed": 24.0
+}]
+
+[node name="PlayerDeathAnimation" type="Node2D" unique_id=2019681905]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=998159940]
+sprite_frames = SubResource("SpriteFrames_s3jg4")
+frame_progress = 0.27803567

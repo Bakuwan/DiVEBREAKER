@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bexfcfbo6588o"]
+
+[ext_resource type="Script" uid="uid://bkjjwxixqey8p" path="res://patterns/five_shot/pattern_five_shot.gd" id="1_script"]
+
+[node name="PatternFiveShot" type="Node2D" unique_id=579892297]
+script = ExtResource("1_script")
+spread_angle = 5.0

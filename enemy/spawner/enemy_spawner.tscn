@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://c5fm51qnb018v"]
+
+[ext_resource type="Script" uid="uid://brgs2gb5ye3hc" path="res://enemy/spawner/enemy_spawner.gd" id="1_ks1gq"]
+[ext_resource type="Resource" uid="uid://cy0ioyc0ffajn" path="res://enemy/stages/main_stage_01.tres" id="2_stage"]
+
+[node name="EnemySpawner" type="Node2D" unique_id=1538306231 groups=["spawner"]]
+script = ExtResource("1_ks1gq")
+stage_data = ExtResource("2_stage")

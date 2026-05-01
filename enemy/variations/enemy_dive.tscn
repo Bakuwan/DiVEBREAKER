@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://4bs332ccbimo"]
+
+[ext_resource type="Texture2D" uid="uid://dyedbkswjwyei" path="res://assets/the_dive_is_freedom.png" id="1_mib2d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rd6st"]
+size = Vector2(46.5, 47)
+
+[node name="EnemyDive" type="Area2D" unique_id=848477930]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1697777511]
+texture = ExtResource("1_mib2d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2069194528]
+position = Vector2(0.25, 2)
+shape = SubResource("RectangleShape2D_rd6st")

@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://b3yic3wa0l4av"]
+
+[ext_resource type="Script" uid="uid://b8tdshastujhv" path="res://bullet/explosive/explosion_effect.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://c6s1ad4myrxqk" path="res://assets/Circle_explosion/Circle_explosion1.png" id="2_jfyha"]
+[ext_resource type="Texture2D" uid="uid://cwgcduikvelwd" path="res://assets/Circle_explosion/Circle_explosion2.png" id="3_5vpr8"]
+[ext_resource type="Texture2D" uid="uid://hhhfn6h1jbkg" path="res://assets/Circle_explosion/Circle_explosion3.png" id="4_f3432"]
+[ext_resource type="Texture2D" uid="uid://l1hcgckcn6se" path="res://assets/Circle_explosion/Circle_explosion4.png" id="5_gkhd4"]
+[ext_resource type="Texture2D" uid="uid://bctdx5c1ywxhe" path="res://assets/Circle_explosion/Circle_explosion5.png" id="6_2d8ya"]
+[ext_resource type="Texture2D" uid="uid://bjtkan4w6wblb" path="res://assets/Circle_explosion/Circle_explosion6.png" id="7_hpg3k"]
+[ext_resource type="Texture2D" uid="uid://bspev3gbyif6o" path="res://assets/Circle_explosion/Circle_explosion7.png" id="8_4i1em"]
+[ext_resource type="Texture2D" uid="uid://b54bid7xxd8wq" path="res://assets/Circle_explosion/Circle_explosion8.png" id="9_0bwbm"]
+[ext_resource type="Texture2D" uid="uid://btyd8br34ceet" path="res://assets/Circle_explosion/Circle_explosion9.png" id="10_q6bfd"]
+[ext_resource type="Texture2D" uid="uid://b6ncqtdfa1mg1" path="res://assets/Circle_explosion/Circle_explosion10.png" id="11_k3ny8"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_btfnv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_jfyha")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_5vpr8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_f3432")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_gkhd4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_2d8ya")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_hpg3k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_4i1em")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_0bwbm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_q6bfd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_k3ny8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 24.0
+}]
+
+[node name="ExplosionEffect" type="Node2D" unique_id=129026465]
+script = ExtResource("1_script")
+color = Color(1, 0.6509804, 0.2, 0.9411765)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1795538343]
+sprite_frames = SubResource("SpriteFrames_btfnv")
+frame_progress = 0.71091163

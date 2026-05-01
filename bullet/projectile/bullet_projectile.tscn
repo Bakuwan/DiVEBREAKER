@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://58kg6ly8hgbe"]
+
+[ext_resource type="Script" uid="uid://nubnbxecial6" path="res://bullet/projectile/bullet_projectile.gd" id="1_pbi67"]
+[ext_resource type="Texture2D" uid="uid://grucaquhgwv1" path="res://assets/FoxShotSheet.png" id="2_u007o"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nxc73"]
+radius = 8.0
+
+[node name="BulletProjectileTriple" type="Area2D" unique_id=1012381594]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_pbi67")
+damage = 1.75
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1998936756]
+shape = SubResource("CircleShape2D_nxc73")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=763163409]
+texture = ExtResource("2_u007o")
+region_enabled = true
+region_rect = Rect2(-0.3844719, 31.938515, 16.569622, 16.208752)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

@@ -1,0 +1,168 @@
+[gd_scene format=3 uid="uid://c8bichkxlsy3v"]
+
+[ext_resource type="Texture2D" uid="uid://byvxnlkat5xmw" path="res://assets/urban-landscape-background.png" id="1_bg"]
+[ext_resource type="Script" uid="uid://pq7byltb3u1" path="res://ui/main_menu/main_menu.gd" id="2_menu"]
+[ext_resource type="FontFile" uid="uid://dhv0ewt5gyksq" path="res://assets/font/monogram.ttf" id="3_omy8q"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font_size = 40
+font_color = Color(0.964706, 0.980392, 1, 1)
+outline_size = 8
+outline_color = Color(0.0156863, 0.027451, 0.0431373, 0.92)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(0.0352941, 0.0627451, 0.0941176, 0.905882)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.505882, 0.741176, 0.835294, 0.847059)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.113725, 0.176471, 0.239216, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.54902, 0.772549, 0.847059, 0.901961)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
+bg_color = Color(0.0823529, 0.133333, 0.180392, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.388235, 0.654902, 0.752941, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.180392, 0.266667, 0.341176, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.74902, 0.894118, 0.964706, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_meta"]
+font_size = 14
+font_color = Color(0.623529, 0.721569, 0.788235, 1)
+
+[node name="MainMenu" type="Control" unique_id=1391125661]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_menu")
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=547267228]
+repeat_size = Vector2(640, 0)
+repeat_times = 2
+
+[node name="BackgroundSprite" type="Sprite2D" parent="Parallax2D" unique_id=273079519]
+modulate = Color(0.92, 0.96, 1.04, 1)
+position = Vector2(321, 147)
+scale = Vector2(1.6666666, 1.8660713)
+texture = ExtResource("1_bg")
+
+[node name="Overlay" type="ColorRect" parent="." unique_id=129647316]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0117647, 0.0196078, 0.0313726, 0.38)
+
+[node name="MenuRoot" type="Control" parent="." unique_id=2029889429]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="MenuRoot" unique_id=227734420]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -198.0
+offset_top = -112.0
+offset_right = 198.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="TitleBlock" type="VBoxContainer" parent="MenuRoot/Content" unique_id=2128659239]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="MenuRoot/Content/TitleBlock" unique_id=2015533209]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_omy8q")
+text = "DiVEBREAKER"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+
+[node name="ButtonPanel" type="PanelContainer" parent="MenuRoot/Content" unique_id=946241182]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="ButtonMargin" type="MarginContainer" parent="MenuRoot/Content/ButtonPanel" unique_id=2109466194]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="ButtonColumn" type="VBoxContainer" parent="MenuRoot/Content/ButtonPanel/ButtonMargin" unique_id=2000645834]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="StartButton" type="Button" parent="MenuRoot/Content/ButtonPanel/ButtonMargin/ButtonColumn" unique_id=812250588]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_omy8q")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "Start"
+
+[node name="QuitButton" type="Button" parent="MenuRoot/Content/ButtonPanel/ButtonMargin/ButtonColumn" unique_id=1833410272]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_omy8q")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "Quit"
+
+[node name="MetaLabel" type="Label" parent="MenuRoot/Content" unique_id=60168283]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_omy8q")
+text = "Controls:
+WASD / Arrow Keys to move"
+label_settings = SubResource("LabelSettings_meta")
+horizontal_alignment = 1

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bers6tqgi54q5"]
+
+[ext_resource type="Script" uid="uid://bjmpjt2ooddh7" path="res://patterns/triple_shot/pattern_triple.gd" id="1_2himv"]
+
+[node name="PatternTriple" type="Node2D" unique_id=1283395245]
+script = ExtResource("1_2himv")

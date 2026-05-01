@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://isl0qr17ocfw"]
+
+[ext_resource type="Script" uid="uid://bqhpbwauxfaby" path="res://bullet/hitscan/bullet_hitscan.gd" id="1_wcilu"]
+[ext_resource type="Texture2D" uid="uid://grucaquhgwv1" path="res://assets/FoxShotSheet.png" id="2_bu57s"]
+
+[node name="Bullet" type="Area2D" unique_id=438662691]
+script = ExtResource("1_wcilu")
+collision_layer = 8
+collision_mask = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1222222604]
+rotation = 1.5707964
+texture = ExtResource("2_bu57s")
+region_enabled = true
+region_rect = Rect2(0.2661438, 112.59245, 12.263313, 17.907227)
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=1730357543]
+target_position = Vector2(50, 0)
+collide_with_areas = true
+collide_with_bodies = false
+collision_mask = 2
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

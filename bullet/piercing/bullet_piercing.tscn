@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://ral7ncugt0s7"]
+
+[ext_resource type="Texture2D" uid="uid://grucaquhgwv1" path="res://assets/FoxShotSheet.png" id="1_v27fx"]
+[ext_resource type="Script" uid="uid://cuivmp5ibit2e" path="res://bullet/piercing/bullet_piercing.gd" id="1_yw8c3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yw8c3"]
+size = Vector2(32, 12)
+
+[node name="BulletPiercing" type="Area2D" unique_id=476303717]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_yw8c3")
+damage = 1.5
+max_hits = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1949952067]
+rotation = 1.5707964
+texture = ExtResource("1_v27fx")
+region_enabled = true
+region_rect = Rect2(1.2911873, 208.89346, 12.541279, 30.660599)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=939448925]
+shape = SubResource("RectangleShape2D_yw8c3")

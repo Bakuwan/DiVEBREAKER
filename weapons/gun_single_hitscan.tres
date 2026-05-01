@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3 uid="uid://ihlw4gg5upfn"]
+
+[ext_resource type="PackedScene" uid="uid://isl0qr17ocfw" path="res://bullet/hitscan/bullet_hitscan.tscn" id="1_bullet"]
+[ext_resource type="PackedScene" uid="uid://sf7jrkyxjxsc" path="res://patterns/single_shot/pattern_single.tscn" id="1_pattern"]
+[ext_resource type="Script" uid="uid://nq5wdpio8kv1" path="res://weapons/weapon_data.gd" id="2_622ry"]
+
+[resource]
+script = ExtResource("2_622ry")
+weapon_name = "Single Hitscan"
+fire_rate = 0.1
+pattern_scene = ExtResource("1_pattern")
+bullet_scene = ExtResource("1_bullet")
+metadata/_custom_type_script = "uid://nq5wdpio8kv1"

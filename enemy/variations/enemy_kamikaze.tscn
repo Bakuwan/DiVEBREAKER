@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dfhx8jccl6o53"]
+
+[ext_resource type="Script" uid="uid://mln1iwnudhap" path="res://enemy/variations/enemy_kamikaze.gd" id="1_7p1mj"]
+[ext_resource type="Texture2D" uid="uid://gec0swyukfti" path="res://assets/enemy_knife.png" id="2_e44du"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8tegq"]
+size = Vector2(51, 14)
+
+[node name="EnemyKamikaze" type="Area2D" unique_id=1658451028 groups=["enemy"]]
+collision_layer = 2
+script = ExtResource("1_7p1mj")
+damage = 10.0
+hp = 3.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=362127466]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_8tegq")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=90210083]
+scale = Vector2(-0.75, -0.75)
+texture = ExtResource("2_e44du")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

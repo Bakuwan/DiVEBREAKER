@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dr157u6n6wkhf"]
+
+[ext_resource type="Script" uid="uid://do5yvg2jmxsnc" path="res://bullet/explosive/bullet_explosive.gd" id="1_1p8v0"]
+[ext_resource type="Texture2D" uid="uid://htebkhx3cir8" path="res://assets/missile.png" id="1_tcv3d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tcv3d"]
+size = Vector2(30, 12)
+
+[node name="BulletExplosive" type="Area2D" unique_id=688106070]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_1p8v0")
+impact_damage = 0.75
+explosion_damage = 1.5
+explosion_radius = 150.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1388954486]
+modulate = Color(1, 0, 0, 1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_tcv3d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1073970687]
+shape = SubResource("RectangleShape2D_tcv3d")

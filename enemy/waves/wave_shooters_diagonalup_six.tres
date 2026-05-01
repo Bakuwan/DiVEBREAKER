@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="EnemySpawnWaveData" format=3 uid="uid://c68iyc82frorx"]
+
+[ext_resource type="PackedScene" uid="uid://gec10tlx24dh" path="res://enemy/variations/enemy_shooter.tscn" id="1_6ahgj"]
+[ext_resource type="Script" uid="uid://dgxtgtffb3f0c" path="res://enemy/spawner/enemy_spawn_wave_data.gd" id="1_p4eak"]
+[ext_resource type="Script" uid="uid://c2i2t3261ovkv" path="res://enemy/spawner/enemy_spawn_slot_data.gd" id="2_6ahgj"]
+
+[sub_resource type="Resource" id="Resource_pj1ol"]
+script = ExtResource("2_6ahgj")
+spawn_position = Vector2(760, 305)
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_gttfm"]
+script = ExtResource("2_6ahgj")
+spawn_position = Vector2(780, 255)
+spawn_delay_from_wave_start = 0.2
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_j1lul"]
+script = ExtResource("2_6ahgj")
+spawn_position = Vector2(800, 205)
+spawn_delay_from_wave_start = 0.4
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_uk38a"]
+script = ExtResource("2_6ahgj")
+spawn_position = Vector2(820, 155)
+spawn_delay_from_wave_start = 0.8
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_6ahgj"]
+script = ExtResource("2_6ahgj")
+spawn_position = Vector2(840, 105)
+spawn_delay_from_wave_start = 1.0
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[sub_resource type="Resource" id="Resource_fwoko"]
+script = ExtResource("2_6ahgj")
+spawn_position = Vector2(860, 55)
+spawn_delay_from_wave_start = 1.2
+metadata/_custom_type_script = "uid://c2i2t3261ovkv"
+
+[resource]
+script = ExtResource("1_p4eak")
+enemy_scene = ExtResource("1_6ahgj")
+slots = Array[ExtResource("2_6ahgj")]([SubResource("Resource_pj1ol"), SubResource("Resource_gttfm"), SubResource("Resource_j1lul"), SubResource("Resource_uk38a"), SubResource("Resource_6ahgj"), SubResource("Resource_fwoko")])
+metadata/_custom_type_script = "uid://dgxtgtffb3f0c"

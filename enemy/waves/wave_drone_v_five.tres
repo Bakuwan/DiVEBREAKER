@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="EnemySpawnWaveData" format=3 uid="uid://c3uwya8xq54yt"]
+
+[ext_resource type="PackedScene" uid="uid://cpxqwm0vgfgu0" path="res://enemy/variations/enemy_drone.tscn" id="1_kgq5l"]
+[ext_resource type="Script" uid="uid://dgxtgtffb3f0c" path="res://enemy/spawner/enemy_spawn_wave_data.gd" id="2_kgkra"]
+[ext_resource type="Script" uid="uid://c2i2t3261ovkv" path="res://enemy/spawner/enemy_spawn_slot_data.gd" id="3_7jb1e"]
+
+[sub_resource type="Resource" id="SpawnSlot_center"]
+script = ExtResource("3_7jb1e")
+
+[sub_resource type="Resource" id="SpawnSlot_upper_inner"]
+script = ExtResource("3_7jb1e")
+spawn_position = Vector2(820, 145)
+
+[sub_resource type="Resource" id="SpawnSlot_lower_inner"]
+script = ExtResource("3_7jb1e")
+spawn_position = Vector2(820, 215)
+
+[sub_resource type="Resource" id="SpawnSlot_upper_outer"]
+script = ExtResource("3_7jb1e")
+spawn_position = Vector2(880, 110)
+
+[sub_resource type="Resource" id="SpawnSlot_lower_outer"]
+script = ExtResource("3_7jb1e")
+spawn_position = Vector2(880, 250)
+
+[resource]
+script = ExtResource("2_kgkra")
+enemy_scene = ExtResource("1_kgq5l")
+slots = Array[ExtResource("3_7jb1e")]([SubResource("SpawnSlot_center"), SubResource("SpawnSlot_upper_inner"), SubResource("SpawnSlot_lower_inner"), SubResource("SpawnSlot_upper_outer"), SubResource("SpawnSlot_lower_outer")])
+start_delay = 0.8
+clear_timeout = 15.0

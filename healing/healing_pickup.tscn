@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://d0bvljwlqaiu0"]
+
+[ext_resource type="Texture2D" uid="uid://qallckevjdsw" path="res://assets/heart.png" id="1_i1hyu"]
+[ext_resource type="Script" uid="uid://cnr2li1uyu2ub" path="res://healing/healing_pickup.gd" id="1_k8id4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i1hyu"]
+radius = 13.038404
+
+[node name="HealingPickup" type="Area2D" unique_id=2032482871]
+script = ExtResource("1_k8id4")
+heal_amount = 15.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1404123544]
+texture = ExtResource("1_i1hyu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1553741699]
+shape = SubResource("CircleShape2D_i1hyu")

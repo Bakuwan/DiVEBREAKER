@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3]
+
+[ext_resource type="PackedScene" uid="uid://ral7ncugt0s7" path="res://bullet/piercing/bullet_piercing.tscn" id="1_bullet"]
+[ext_resource type="PackedScene" path="res://patterns/wave_shot/pattern_wave_shot.tscn" id="1_pattern"]
+[ext_resource type="Script" uid="uid://nq5wdpio8kv1" path="res://weapons/weapon_data.gd" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+weapon_name = "Wave Piercing"
+fire_rate = 1.15
+pattern_scene = ExtResource("1_pattern")
+bullet_scene = ExtResource("1_bullet")

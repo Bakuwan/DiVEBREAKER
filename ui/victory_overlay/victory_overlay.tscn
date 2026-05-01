@@ -1,0 +1,198 @@
+[gd_scene format=3 uid="uid://cgibqieuqndn3"]
+
+[ext_resource type="Script" uid="uid://c4yapiy06ewoy" path="res://ui/victory_overlay/victory_overlay.gd" id="1_victory"]
+[ext_resource type="FontFile" uid="uid://dhv0ewt5gyksq" path="res://assets/font/monogram.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.0666667, 0.0941176, 0.129412, 0.956863)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.67451, 0.784314, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font_size = 28
+font_color = Color(0.968627, 0.980392, 1, 1)
+outline_size = 6
+outline_color = Color(0.0196078, 0.0313726, 0.0509804, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_body"]
+font_color = Color(0.788235, 0.854902, 0.905882, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.117647, 0.180392, 0.247059, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.54902, 0.772549, 0.847059, 0.901961)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
+bg_color = Color(0.0862745, 0.137255, 0.192157, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.67451, 0.784314, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.184314, 0.270588, 0.34902, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.729412, 0.882353, 0.94902, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="VictoryOverlay" type="CanvasLayer" unique_id=442994871]
+script = ExtResource("1_victory")
+
+[node name="Root" type="Control" parent="." unique_id=1772182975]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="Root" unique_id=1306681460]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0117647, 0.0196078, 0.0313726, 0.64)
+
+[node name="Center" type="CenterContainer" parent="Root" unique_id=64670945]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Root/Center" unique_id=778887014]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margin" type="MarginContainer" parent="Root/Center/Panel" unique_id=542601250]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="Root/Center/Panel/Margin" unique_id=1928002245]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="Root/Center/Panel/Margin/VBox" unique_id=1693480379]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+text = "GAME CLEARED"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="Root/Center/Panel/Margin/VBox" unique_id=1569569741]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+text = "Congratulations!"
+label_settings = SubResource("LabelSettings_body")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="StatsColumn" type="VBoxContainer" parent="Root/Center/Panel/Margin/VBox" unique_id=101901610]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="EnemyKilledRow" type="HBoxContainer" parent="Root/Center/Panel/Margin/VBox/StatsColumn" unique_id=1613006124]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Root/Center/Panel/Margin/VBox/StatsColumn/EnemyKilledRow" unique_id=1971045629]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "Enemies Down"
+
+[node name="ValueLabel" type="Label" parent="Root/Center/Panel/Margin/VBox/StatsColumn/EnemyKilledRow" unique_id=1208495000]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 2
+
+[node name="LootboxRow" type="HBoxContainer" parent="Root/Center/Panel/Margin/VBox/StatsColumn" unique_id=617736856]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Root/Center/Panel/Margin/VBox/StatsColumn/LootboxRow" unique_id=1774633768]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "Lootboxes Picked"
+
+[node name="ValueLabel" type="Label" parent="Root/Center/Panel/Margin/VBox/StatsColumn/LootboxRow" unique_id=336853099]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 2
+
+[node name="HealingRow" type="HBoxContainer" parent="Root/Center/Panel/Margin/VBox/StatsColumn" unique_id=746105841]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Root/Center/Panel/Margin/VBox/StatsColumn/HealingRow" unique_id=1665232816]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "Healing Pickups"
+
+[node name="ValueLabel" type="Label" parent="Root/Center/Panel/Margin/VBox/StatsColumn/HealingRow" unique_id=1294448464]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 2
+
+[node name="ButtonRow" type="HBoxContainer" parent="Root/Center/Panel/Margin/VBox" unique_id=222242937]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="Root/Center/Panel/Margin/VBox/ButtonRow" unique_id=735589078]
+custom_minimum_size = Vector2(136, 44)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "Retry"
+
+[node name="MenuButton" type="Button" parent="Root/Center/Panel/Margin/VBox/ButtonRow" unique_id=361334384]
+custom_minimum_size = Vector2(136, 44)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "Main Menu"

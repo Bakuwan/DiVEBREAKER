@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://bpkqx4xrday6l"]
+
+[ext_resource type="Script" uid="uid://d2ajsh8cuomq3" path="res://player/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://nq5wdpio8kv1" path="res://weapons/weapon_data.gd" id="2_8t03j"]
+[ext_resource type="Resource" uid="uid://ihlw4gg5upfn" path="res://weapons/gun_single_hitscan.tres" id="2_qhqgy"]
+[ext_resource type="PackedScene" uid="uid://55axws5x20fh" path="res://player/player_death_animation.tscn" id="2_s7qer"]
+[ext_resource type="Resource" uid="uid://d12wy12f8xbif" path="res://weapons/gun_wave_projectile.tres" id="2_wodsf"]
+[ext_resource type="Resource" uid="uid://g8v452462opx" path="res://weapons/gun_triple_projectile.tres" id="4_tuyoq"]
+[ext_resource type="Resource" uid="uid://djtacenvr8s2s" path="res://weapons/gun_triple_hitscan.tres" id="5_tuyoq"]
+[ext_resource type="Resource" uid="uid://be3b6wm7mk8hm" path="res://weapons/gun_single_projectile.tres" id="8_newgun"]
+[ext_resource type="Resource" uid="uid://we7oh2ljoauy" path="res://weapons/gun_single_piercing.tres" id="9_pierce_single"]
+[ext_resource type="Resource" uid="uid://dn2kwcmup1ca6" path="res://weapons/gun_triple_piercing.tres" id="10_pierce_triple"]
+[ext_resource type="Resource" uid="uid://c6g4jkhbrsxxe" path="res://weapons/gun_single_homing.tres" id="11_homing_single"]
+[ext_resource type="Resource" path="res://weapons/gun_triple_homing.tres" id="12_homing_triple"]
+[ext_resource type="Resource" uid="uid://bxrtbl3cemt12" path="res://weapons/gun_single_explosive.tres" id="13_explosive_single"]
+[ext_resource type="Resource" path="res://weapons/gun_triple_explosive.tres" id="14_explosive_triple"]
+[ext_resource type="Resource" uid="uid://dsdkiebsr654f" path="res://weapons/gun_burst_hitscan.tres" id="15_burst_hitscan"]
+[ext_resource type="Resource" path="res://weapons/gun_burst_projectile.tres" id="16_burst_projectile"]
+[ext_resource type="Resource" path="res://weapons/gun_burst_piercing.tres" id="17_burst_piercing"]
+[ext_resource type="Resource" uid="uid://djuy4hjr37ghx" path="res://weapons/gun_wave_hitscan.tres" id="18_wave_hitscan"]
+[ext_resource type="Resource" path="res://weapons/gun_wave_piercing.tres" id="19_wave_piercing"]
+[ext_resource type="Resource" uid="uid://chwl14pq3fya3" path="res://weapons/gun_five_shot_hitscan.tres" id="20_five_hitscan"]
+[ext_resource type="Resource" path="res://weapons/gun_five_shot_projectile.tres" id="21_five_projectile"]
+[ext_resource type="Texture2D" uid="uid://vrdqvphsio17" path="res://assets/player_wing.png" id="22_bjvpn"]
+[ext_resource type="Resource" path="res://weapons/gun_five_shot_piercing.tres" id="22_five_piercing"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s7qer"]
+radius = 15.033297
+
+[node name="Player" type="CharacterBody2D" unique_id=1689956804 groups=["player"]]
+script = ExtResource("1_g2els")
+speed = 200.0
+death_effect_scene = ExtResource("2_s7qer")
+weapon_pool = Array[ExtResource("2_8t03j")]([ExtResource("2_qhqgy"), ExtResource("8_newgun"), ExtResource("5_tuyoq"), ExtResource("4_tuyoq"), ExtResource("9_pierce_single"), ExtResource("10_pierce_triple"), ExtResource("11_homing_single"), ExtResource("12_homing_triple"), ExtResource("13_explosive_single"), ExtResource("14_explosive_triple"), ExtResource("15_burst_hitscan"), ExtResource("16_burst_projectile"), ExtResource("17_burst_piercing"), ExtResource("18_wave_hitscan"), ExtResource("2_wodsf"), ExtResource("19_wave_piercing"), ExtResource("20_five_hitscan"), ExtResource("21_five_projectile"), ExtResource("22_five_piercing")])
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1430389495]
+position = Vector2(-2, 0)
+texture = ExtResource("22_bjvpn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1630367378]
+shape = SubResource("CircleShape2D_s7qer")

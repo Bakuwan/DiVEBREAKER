@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="EnemyMovementPattern" format=3 uid="uid://dg4twqub5oucy"]
+
+[ext_resource type="Script" uid="uid://ipme5quux667" path="res://enemy/movement_patterns/enemy_movement_pattern.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+movement_type = 1
+move_in_distance = 240.0

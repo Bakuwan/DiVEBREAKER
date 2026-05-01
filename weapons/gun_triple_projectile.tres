@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3 uid="uid://g8v452462opx"]
+
+[ext_resource type="PackedScene" uid="uid://58kg6ly8hgbe" path="res://bullet/projectile/bullet_projectile.tscn" id="1_bullet"]
+[ext_resource type="PackedScene" uid="uid://bers6tqgi54q5" path="res://patterns/triple_shot/pattern_triple.tscn" id="1_pattern"]
+[ext_resource type="Script" uid="uid://nq5wdpio8kv1" path="res://weapons/weapon_data.gd" id="1_wyh6b"]
+
+[resource]
+script = ExtResource("1_wyh6b")
+weapon_name = "Triple Shot"
+fire_rate = 0.5
+pattern_scene = ExtResource("1_pattern")
+bullet_scene = ExtResource("1_bullet")
+metadata/_custom_type_script = "uid://nq5wdpio8kv1"

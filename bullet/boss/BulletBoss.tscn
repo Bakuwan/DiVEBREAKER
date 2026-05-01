@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://cl55t622fpv4q"]
+
+[ext_resource type="Script" uid="uid://cja24u7jak0bm" path="res://bullet/boss/bullet_boss.gd" id="1_fhdq1"]
+[ext_resource type="Texture2D" uid="uid://cjdhoghioae5a" path="res://assets/boss_special_attack.png" id="1_hlcw7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_53mto"]
+radius = 11.045361
+
+[node name="BulletBoss" type="Area2D" unique_id=18820981]
+collision_layer = 4
+script = ExtResource("1_fhdq1")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1180293736]
+rotation = -6.2831855
+scale = Vector2(0.6, 0.55)
+texture = ExtResource("1_hlcw7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=365213134]
+shape = SubResource("CircleShape2D_53mto")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

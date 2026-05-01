@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://sf7jrkyxjxsc"]
+
+[ext_resource type="Script" uid="uid://cb5717jkg83gw" path="res://patterns/single_shot/pattern_single.gd" id="1_jbgnd"]
+
+[node name="PatternSingle" type="Node2D" unique_id=1271744317]
+script = ExtResource("1_jbgnd")

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://c4rjo6l00y8y2"]
+
+[ext_resource type="Script" uid="uid://6vy2vuw43x3c" path="res://lootbox/lootbox_pickup.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dj7hfshntxck" path="res://assets/lootbox.png" id="2_clkh7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lootbox"]
+radius = 14.0
+
+[node name="LootboxPickup" type="Area2D" unique_id=1427702329]
+collision_layer = 16
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=488829544]
+texture = ExtResource("2_clkh7")
+region_rect = Rect2(95, 108, 18, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=591240963]
+position = Vector2(0, -1)
+shape = SubResource("CircleShape2D_lootbox")

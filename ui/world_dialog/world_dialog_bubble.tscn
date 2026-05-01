@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bn7tjhp2l6c0d"]
+
+[ext_resource type="Script" uid="uid://j6wcen4sj76m" path="res://ui/world_dialog/world_dialog_bubble.gd" id="1_dialog"]
+[ext_resource type="FontFile" uid="uid://dhv0ewt5gyksq" path="res://assets/font/monogram.ttf" id="2_yhnef"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialog"]
+bg_color = Color(0.054902, 0.0823529, 0.113725, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.623529, 0.823529, 0.913725, 0.94)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_dialog"]
+font_size = 14
+font_color = Color(0.956863, 0.972549, 1, 1)
+outline_size = 4
+outline_color = Color(0.0196078, 0.0313726, 0.0470588, 0.85)
+
+[node name="WorldDialogBubble" type="Node2D" unique_id=1222912839]
+script = ExtResource("1_dialog")
+follow_offset = Vector2(0, -24)
+
+[node name="BubblePanel" type="PanelContainer" parent="." unique_id=1674645599]
+offset_right = 114.0
+offset_bottom = 28.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dialog")
+
+[node name="Margin" type="MarginContainer" parent="BubblePanel" unique_id=605755774]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="Label" type="Label" parent="BubblePanel/Margin" unique_id=1014058247]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_yhnef")
+theme_override_font_sizes/font_size = 8
+text = "..."
+label_settings = SubResource("LabelSettings_dialog")
+horizontal_alignment = 1
+autowrap_mode = 3

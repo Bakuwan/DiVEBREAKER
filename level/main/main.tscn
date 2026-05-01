@@ -1,0 +1,200 @@
+[gd_scene format=3 uid="uid://bx6keetgmel3o"]
+
+[ext_resource type="Texture2D" uid="uid://byvxnlkat5xmw" path="res://assets/urban-landscape-background.png" id="1_sugp2"]
+[ext_resource type="AudioStream" uid="uid://dmyg1bmnfn7xn" path="res://assets/audio/stg_bs012.ogg" id="2_mx3v8"]
+[ext_resource type="AudioStream" uid="uid://vm7g7s25vtvg" path="res://assets/audio/stg_st008.ogg" id="2_ny550"]
+[ext_resource type="PackedScene" uid="uid://bpkqx4xrday6l" path="res://player/player.tscn" id="2_sugp2"]
+[ext_resource type="Script" uid="uid://be0mpas73jkj3" path="res://level/main/main.gd" id="2_y114g"]
+[ext_resource type="Script" uid="uid://dptjaawl5enku" path="res://level/main/health_bar.gd" id="3_iuh81"]
+[ext_resource type="PackedScene" uid="uid://c5fm51qnb018v" path="res://enemy/spawner/enemy_spawner.tscn" id="3_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://cahhnf40c1o76" path="res://ui/lose_overlay/lose_overlay.tscn" id="4_lose"]
+[ext_resource type="Script" uid="uid://25pap6je7wgt" path="res://level/main/weapon_label.gd" id="5_weapon"]
+[ext_resource type="FontFile" uid="uid://dhv0ewt5gyksq" path="res://assets/font/monogram.ttf" id="6_0mcwd"]
+[ext_resource type="PackedScene" uid="uid://cgibqieuqndn3" path="res://ui/victory_overlay/victory_overlay.tscn" id="6_victory"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0mcwd"]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iuh81"]
+bg_color = Color(0.8392157, 0.12156863, 0.12156863, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+corner_detail = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_bg"]
+bg_color = Color(0.09803922, 0.09803922, 0.09803922, 0.78431374)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_fill"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_warning"]
+font_size = 32
+font_color = Color(0.9098039, 0.9647059, 1, 1)
+outline_size = 8
+outline_color = Color(0.047058824, 0.11764706, 0.14901961, 0.8627451)
+
+[sub_resource type="Animation" id="Animation_2qctd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_3glik"]
+resource_name = "warning_blink"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mx3v8"]
+_data = {
+&"RESET": SubResource("Animation_2qctd"),
+&"warning_blink": SubResource("Animation_3glik")
+}
+
+[node name="Main" type="Node2D" unique_id=1763712051]
+script = ExtResource("2_y114g")
+stage_bgm = ExtResource("2_ny550")
+boss_bgm = ExtResource("2_mx3v8")
+boss_dialog_line_gap = 0.1
+player_dialog_offset = Vector2(0, -24)
+boss_dialog_offset = Vector2(0, -24)
+boss_intro_dialog_lines = Array[String](["...", "I am the one who dives."])
+player_intro_dialog_lines = Array[String](["John FREEDOM DiVE↓?!"])
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=748098410]
+repeat_size = Vector2(640, 0)
+autoscroll = Vector2(-400, 0)
+repeat_times = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Parallax2D" unique_id=1052777648]
+modulate = Color(1.163, 1.163, 1.163, 1)
+position = Vector2(321, 147)
+scale = Vector2(1.6666666, 1.8660713)
+texture = ExtResource("1_sugp2")
+
+[node name="Player" parent="." unique_id=1689956804 instance=ExtResource("2_sugp2")]
+unique_name_in_owner = true
+position = Vector2(95, 182)
+
+[node name="EnemySpawner" parent="." unique_id=889596576 instance=ExtResource("3_jyhfs")]
+auto_start = false
+
+[node name="BossSpawnPoint" type="Marker2D" parent="." unique_id=159204077]
+position = Vector2(760, 180)
+
+[node name="BossAnchorPoint" type="Marker2D" parent="." unique_id=1903118912]
+position = Vector2(500, 180)
+
+[node name="StageBgmPlayer" type="AudioStreamPlayer" parent="." unique_id=181102007]
+volume_db = -10.0
+
+[node name="BossBgmPlayer" type="AudioStreamPlayer" parent="." unique_id=546596114]
+volume_db = -10.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1927395837]
+
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=399944557]
+offset_left = 9.0
+offset_top = 8.0
+offset_right = 182.0
+offset_bottom = 18.0
+theme_override_styles/background = SubResource("StyleBoxFlat_0mcwd")
+theme_override_styles/fill = SubResource("StyleBoxFlat_iuh81")
+show_percentage = false
+script = ExtResource("3_iuh81")
+
+[node name="WeaponLabel" type="Label" parent="CanvasLayer" unique_id=253833050]
+offset_left = 10.0
+offset_top = 23.0
+offset_right = 220.0
+offset_bottom = 39.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = 3
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_0mcwd")
+theme_override_font_sizes/font_size = 24
+text = "Weapon: Default"
+script = ExtResource("5_weapon")
+
+[node name="BossHealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=65280120]
+offset_left = 308.0
+offset_top = 11.0
+offset_right = 632.0
+offset_bottom = 21.0
+theme_override_styles/background = SubResource("StyleBoxFlat_boss_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_boss_fill")
+fill_mode = 1
+show_percentage = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer" unique_id=1932060868]
+offset_right = 642.0
+offset_bottom = 356.0
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer" unique_id=604147223]
+layout_mode = 2
+alignment = 1
+
+[node name="BossWarning" type="Label" parent="CanvasLayer/HBoxContainer/VBoxContainer" unique_id=1463811348]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_0mcwd")
+theme_override_font_sizes/font_size = 100
+text = "WARNING"
+label_settings = SubResource("LabelSettings_warning")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/HBoxContainer/VBoxContainer/BossWarning" unique_id=766581032]
+libraries/ = SubResource("AnimationLibrary_mx3v8")
+
+[node name="LoseOverlay" parent="." unique_id=1784052703 instance=ExtResource("4_lose")]
+visible = false
+
+[node name="VictoryOverlay" parent="." unique_id=925987318 instance=ExtResource("6_victory")]
+visible = false

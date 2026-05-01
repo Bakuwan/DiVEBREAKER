@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WeaponData" format=3 uid="uid://dsdkiebsr654f"]
+
+[ext_resource type="PackedScene" uid="uid://isl0qr17ocfw" path="res://bullet/hitscan/bullet_hitscan.tscn" id="1_bullet"]
+[ext_resource type="PackedScene" path="res://patterns/burst_three/pattern_burst_three.tscn" id="1_pattern"]
+[ext_resource type="Script" uid="uid://nq5wdpio8kv1" path="res://weapons/weapon_data.gd" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+weapon_name = "Burst Hitscan"
+fire_rate = 0.3
+pattern_scene = ExtResource("1_pattern")
+bullet_scene = ExtResource("1_bullet")
