@@ -9,6 +9,18 @@ signal boss_defeat_started()
 signal boss_defeat_finished()
 
 const BOSS_PROJECTILE_GROUP := "boss_projectile"
+const BULLET_HELL_CHARGE_SHADER_CODE := """
+shader_type canvas_item;
+
+uniform vec4 charge_color : source_color = vec4(1.0, 0.92, 0.35, 1.0);
+uniform float charge_amount : hint_range(0.0, 1.0) = 0.0;
+
+void fragment() {
+	vec4 tex = texture(TEXTURE, UV) * COLOR;
+	vec3 charged_rgb = tex.rgb * charge_color.rgb;
+	COLOR = vec4(mix(tex.rgb, charged_rgb, charge_amount), tex.a);
+}
+"""
 
 @export_category("Boss Identity")
 @export var boss_name: String = "when the dive is freedom"
@@ -53,7 +65,9 @@ const BOSS_PROJECTILE_GROUP := "boss_projectile"
 @export var anchor_bullet_damage: float = 14.0
 @export var bullet_hell_center_position: Vector2 = Vector2(500.0, 180.0)
 @export var bullet_hell_phase_two_cycle_threshold: int = 12
-@export var bullet_hell_windup: float = 0.4
+@export var bullet_hell_windup: float = 3.0
+@export var bullet_hell_warning_sound: AudioStream = preload("res://assets/audio/warning.wav")
+@export var bullet_hell_warning_sound_volume_db: float = -3.0
 @export var bullet_hell_pulse_count: int = 8
 @export var bullet_hell_pulse_interval: float = 0.3
 @export var bullet_hell_bullet_count: int = 8
@@ -100,6 +114,9 @@ var bullet_hell_invulnerable := false
 var phase_two_attack_cycle_count := 0
 var combat_enabled := false
 var defeat_active := false
+var bullet_hell_charge_shader: Shader
+var bullet_hell_charge_materials := {}
+var bullet_hell_charge_original_materials := {}
 
 @onready var target_player: Node2D = get_tree().get_first_node_in_group("player") as Node2D
 
@@ -412,6 +429,7 @@ func _run_bullet_hell_attack() -> void:
 	global_position = special_attack_target_position
 
 	if bullet_hell_windup > 0.0:
+		play_bullet_hell_warning_sound()
 		await get_tree().create_timer(bullet_hell_windup, false).timeout
 
 	await run_bullet_hell_patterns()
@@ -424,6 +442,17 @@ func _run_bullet_hell_attack() -> void:
 	hold_timer = 0.0
 	phase_two_attack_cycle_count = 0
 	attack_timer = hold_attack_windup
+
+func play_bullet_hell_warning_sound() -> void:
+	if bullet_hell_warning_sound == null:
+		return
+
+	var audio_player := AudioStreamPlayer.new()
+	audio_player.stream = bullet_hell_warning_sound
+	audio_player.volume_db = bullet_hell_warning_sound_volume_db
+	audio_player.finished.connect(audio_player.queue_free)
+	add_child(audio_player)
+	audio_player.play()
 
 func _run_defeat_sequence() -> void:
 	await run_defeat_slowmo()
@@ -578,20 +607,30 @@ func spawn_bullet_hell_projectile(direction: Vector2, projectile_speed: float) -
 	if projectile != null and "damage" in projectile:
 		projectile.damage = anchor_bullet_damage
 
-func update_bullet_hell_invulnerability_visual(delta: float) -> void:
+func update_bullet_hell_invulnerability_visual(_delta: float) -> void:
 	if not bullet_hell_invulnerable:
 		return
 
 	if flash_sprites.is_empty():
 		cache_flash_sprites(self)
 
+	if flash_tween != null and flash_tween.is_running():
+		flash_tween.kill()
+		restore_hit_flash_materials()
+
 	var pulse_strength = 0.5 + 0.5 * sin(movement_elapsed * TAU * bullet_hell_invul_pulse_speed)
-	var pulsed_color = Color.WHITE.lerp(bullet_hell_invul_color, pulse_strength)
 
 	for sprite in flash_sprites:
 		if not is_instance_valid(sprite):
 			continue
-		sprite.modulate = pulsed_color
+
+		if not bullet_hell_charge_original_materials.has(sprite):
+			bullet_hell_charge_original_materials[sprite] = sprite.material
+
+		var charge_material = get_bullet_hell_charge_material(sprite)
+		charge_material.set_shader_parameter("charge_color", bullet_hell_invul_color)
+		charge_material.set_shader_parameter("charge_amount", pulse_strength)
+		sprite.material = charge_material
 
 func reset_bullet_hell_invulnerability_visual() -> void:
 	if bullet_hell_invulnerable:
@@ -600,8 +639,31 @@ func reset_bullet_hell_invulnerability_visual() -> void:
 	for sprite in flash_sprites:
 		if not is_instance_valid(sprite):
 			continue
-		var original_modulate: Color = sprite_original_modulates.get(sprite, Color.WHITE)
-		sprite.modulate = original_modulate
+
+		if bullet_hell_charge_materials.has(sprite):
+			var charge_material = bullet_hell_charge_materials[sprite] as ShaderMaterial
+			charge_material.set_shader_parameter("charge_amount", 0.0)
+
+		if bullet_hell_charge_original_materials.has(sprite):
+			sprite.material = bullet_hell_charge_original_materials[sprite]
+
+func get_bullet_hell_charge_material(sprite: Sprite2D) -> ShaderMaterial:
+	if bullet_hell_charge_materials.has(sprite):
+		return bullet_hell_charge_materials[sprite] as ShaderMaterial
+
+	var material := ShaderMaterial.new()
+	material.shader = get_bullet_hell_charge_shader()
+	material.set_shader_parameter("charge_color", bullet_hell_invul_color)
+	material.set_shader_parameter("charge_amount", 0.0)
+	bullet_hell_charge_materials[sprite] = material
+	return material
+
+func get_bullet_hell_charge_shader() -> Shader:
+	if bullet_hell_charge_shader == null:
+		bullet_hell_charge_shader = Shader.new()
+		bullet_hell_charge_shader.code = BULLET_HELL_CHARGE_SHADER_CODE
+
+	return bullet_hell_charge_shader
 
 func fire_spread_shot(projectile_count: int, angle_step: float) -> void:
 	var base_direction = get_direction_to_player()

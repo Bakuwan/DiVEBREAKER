@@ -41,7 +41,6 @@ var spawn_position: Vector2
 var movement_elapsed: float = 0.0
 var flash_tween: Tween
 var flash_sprites: Array[Sprite2D] = []
-var sprite_original_modulates := {}
 var flash_original_materials := {}
 var flash_materials := {}
 var hit_flash_shader: Shader
@@ -158,7 +157,6 @@ func cache_flash_sprites(node: Node) -> void:
 			if child is Sprite2D:
 				var sprite := child as Sprite2D
 				flash_sprites.append(sprite)
-				sprite_original_modulates[sprite] = sprite.modulate
 
 			cache_flash_sprites(child)
 
