@@ -10,6 +10,11 @@ class_name PlayerShip
 @export var death_effect_scene: PackedScene
 @export var death_effect_fallback_duration: float = 0.8
 @export var hide_player_visuals_on_death: bool = true
+@export_category("Audio")
+@export var hurt_sound: AudioStream = preload("res://assets/audio/hurt_sound.wav")
+@export var hurt_sound_volume_db: float = -4.0
+@export var death_sound: AudioStream = preload("res://assets/audio/death_sound.wav")
+@export var death_sound_volume_db: float = -2.0
 var current_health: float
 
 signal health_changed(new_health: float, max_health: float)
@@ -158,6 +163,7 @@ func take_damage(amount: float):
 	var damage_taken := previous_health - current_health
 	if damage_taken > 0.0:
 		play_hit_flash()
+		play_one_shot_sound(hurt_sound, hurt_sound_volume_db)
 		player_damaged.emit(damage_taken)
 
 	health_changed.emit(current_health, max_health)
@@ -170,6 +176,7 @@ func die():
 		return
 
 	is_dead = true
+	play_one_shot_sound(death_sound, death_sound_volume_db)
 	intro_active = false
 	set_movement_locked(true)
 	set_shooting_locked(true)
@@ -347,3 +354,23 @@ func restore_hit_flash_materials() -> void:
 
 		if flash_original_materials.has(sprite):
 			sprite.material = flash_original_materials[sprite]
+
+func play_one_shot_sound(sound: AudioStream, volume_db: float) -> void:
+	if sound == null:
+		return
+
+	var playback_parent: Node = get_parent()
+	if playback_parent == null:
+		playback_parent = get_tree().current_scene
+
+	if playback_parent == null:
+		return
+
+	var audio_player := AudioStreamPlayer.new()
+	audio_player.stream = sound
+	audio_player.volume_db = volume_db
+	audio_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	audio_player.finished.connect(audio_player.queue_free)
+
+	playback_parent.add_child(audio_player)
+	audio_player.play()
