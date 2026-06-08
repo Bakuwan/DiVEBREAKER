@@ -11,6 +11,20 @@ enum StageState {
 const NORMAL_PARALLAX_SCROLL := Vector2(-400.0, 0.0)
 const BOSS_PARALLAX_SCROLL := Vector2(-300.0, 0.0)
 const MAIN_MENU_SCENE_PATH := "res://ui/main_menu/main_menu.tscn"
+const DAMAGE_EDGE_SHADER_CODE := """
+shader_type canvas_item;
+
+uniform vec4 flash_color : source_color = vec4(1.0, 0.0, 0.0, 1.0);
+uniform float flash_alpha : hint_range(0.0, 1.0) = 0.0;
+uniform float edge_width : hint_range(0.0, 0.5) = 0.18;
+uniform float edge_softness : hint_range(0.0, 0.5) = 0.16;
+
+void fragment() {
+	float edge_distance = min(min(UV.x, 1.0 - UV.x), min(UV.y, 1.0 - UV.y));
+	float edge_mask = 1.0 - smoothstep(edge_width, edge_width + edge_softness, edge_distance);
+	COLOR = vec4(flash_color.rgb, flash_color.a * flash_alpha * edge_mask);
+}
+"""
 
 @export var boss_scene: PackedScene = preload("res://enemy/boss/boss.tscn")
 @export var dialog_bubble_scene: PackedScene = preload("res://ui/world_dialog/world_dialog_bubble.tscn")
@@ -33,6 +47,14 @@ const MAIN_MENU_SCENE_PATH := "res://ui/main_menu/main_menu.tscn"
 @export var boss_healing_spawn_interval: float = 13.0
 @export var boss_pickup_spawn_margin: float = 48.0
 @export var boss_pickup_spawn_y_padding: float = 24.0
+@export_category("Damage Feedback")
+@export var damage_shake_strength: float = 3.0
+@export var damage_shake_duration: float = 0.12
+@export var damage_overlay_color: Color = Color(1.0, 0.0, 0.0, 1.0)
+@export var damage_overlay_alpha: float = 0.42
+@export var damage_overlay_fade_duration: float = 0.22
+@export var damage_overlay_edge_width: float = 0.16
+@export var damage_overlay_edge_softness: float = 0.18
 @export var boss_intro_dialog_lines: Array[String] = [
 	"So you made it this far.",
 	"Let's see if your dive still holds."
@@ -49,9 +71,14 @@ var game_over := false
 var enemy_killed_count := 0
 var lootbox_picked_count := 0
 var healing_picked_count := 0
+var damage_feedback_camera: Camera2D
+var damage_shake_tween: Tween
+var damage_overlay_tween: Tween
+var damage_overlay_material: ShaderMaterial
 
 @onready var parallax_background: Parallax2D = $Parallax2D
 @onready var player: PlayerShip = $Player
+@onready var ui_layer: CanvasLayer = $CanvasLayer
 @onready var enemy_spawner: Node2D = $EnemySpawner
 @onready var boss_spawn_point: Marker2D = $BossSpawnPoint
 @onready var boss_anchor_point: Marker2D = $BossAnchorPoint
@@ -75,7 +102,9 @@ func _ready() -> void:
 	boss_health_bar.min_value = 0.0
 	boss_health_bar.value = 0.0
 	parallax_background.autoscroll = NORMAL_PARALLAX_SCROLL
+	setup_damage_feedback()
 	player.player_died.connect(_on_player_died)
+	player.player_damaged.connect(_on_player_damaged)
 	lose_overlay.retry_requested.connect(_on_retry_requested)
 	lose_overlay.main_menu_requested.connect(_on_main_menu_requested)
 	victory_overlay.retry_requested.connect(_on_retry_requested)
@@ -101,17 +130,30 @@ func start_boss_stage_flow() -> void:
 	else:
 		await wait_for_spawner_completion()
 
-	while has_remaining_enemies():
+	if game_over or not is_inside_tree():
+		return
+
+	while not game_over and is_inside_tree() and has_remaining_enemies():
 		await get_tree().process_frame
+
+	if game_over or not is_inside_tree():
+		return
 
 	await start_pre_boss_transition()
 
 func wait_for_spawner_completion() -> void:
-	while enemy_spawner != null and bool(enemy_spawner.get("stage_running")):
+	while not game_over and is_inside_tree() and enemy_spawner != null and bool(enemy_spawner.get("stage_running")):
 		await get_tree().process_frame
 
 func has_remaining_enemies() -> bool:
-	for enemy in get_tree().get_nodes_in_group("enemy"):
+	if game_over or not is_inside_tree():
+		return false
+
+	var tree = get_tree()
+	if tree == null:
+		return false
+
+	for enemy in tree.get_nodes_in_group("enemy"):
 		if enemy is BossMain:
 			continue
 		return true
@@ -167,6 +209,85 @@ func tween_parallax_scroll(target_scroll: Vector2, duration: float) -> void:
 	parallax_tween = create_tween()
 	parallax_tween.tween_property(parallax_background, "autoscroll", target_scroll, duration)
 
+func setup_damage_feedback() -> void:
+	damage_feedback_camera = Camera2D.new()
+	damage_feedback_camera.name = "DamageFeedbackCamera"
+	damage_feedback_camera.position = get_viewport_rect().size * 0.5
+	add_child(damage_feedback_camera)
+	damage_feedback_camera.make_current()
+
+	var damage_overlay := ColorRect.new()
+	damage_overlay.name = "DamageEdgeOverlay"
+	damage_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	damage_overlay.color = Color.WHITE
+	damage_overlay.z_index = 100
+	damage_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	damage_overlay.offset_left = 0.0
+	damage_overlay.offset_top = 0.0
+	damage_overlay.offset_right = 0.0
+	damage_overlay.offset_bottom = 0.0
+
+	var shader := Shader.new()
+	shader.code = DAMAGE_EDGE_SHADER_CODE
+	damage_overlay_material = ShaderMaterial.new()
+	damage_overlay_material.shader = shader
+	damage_overlay_material.set_shader_parameter("flash_color", damage_overlay_color)
+	damage_overlay_material.set_shader_parameter("flash_alpha", 0.0)
+	damage_overlay_material.set_shader_parameter("edge_width", damage_overlay_edge_width)
+	damage_overlay_material.set_shader_parameter("edge_softness", damage_overlay_edge_softness)
+	damage_overlay.material = damage_overlay_material
+
+	ui_layer.add_child(damage_overlay)
+
+func play_damage_camera_shake() -> void:
+	if damage_feedback_camera == null or damage_shake_strength <= 0.0 or damage_shake_duration <= 0.0:
+		return
+
+	if damage_shake_tween != null and damage_shake_tween.is_running():
+		damage_shake_tween.kill()
+
+	damage_shake_tween = create_tween()
+	damage_shake_tween.tween_method(
+		Callable(self, "set_damage_camera_shake"),
+		damage_shake_strength,
+		0.0,
+		damage_shake_duration
+	)
+	damage_shake_tween.tween_callback(Callable(self, "reset_damage_camera_shake"))
+
+func set_damage_camera_shake(strength: float) -> void:
+	if damage_feedback_camera == null:
+		return
+
+	damage_feedback_camera.offset = Vector2(
+		randf_range(-strength, strength),
+		randf_range(-strength, strength)
+	)
+
+func reset_damage_camera_shake() -> void:
+	if damage_feedback_camera != null:
+		damage_feedback_camera.offset = Vector2.ZERO
+
+func play_damage_overlay_flash() -> void:
+	if damage_overlay_material == null or damage_overlay_alpha <= 0.0:
+		return
+
+	if damage_overlay_tween != null and damage_overlay_tween.is_running():
+		damage_overlay_tween.kill()
+
+	damage_overlay_material.set_shader_parameter("flash_color", damage_overlay_color)
+	damage_overlay_material.set_shader_parameter("edge_width", damage_overlay_edge_width)
+	damage_overlay_material.set_shader_parameter("edge_softness", damage_overlay_edge_softness)
+	damage_overlay_material.set_shader_parameter("flash_alpha", damage_overlay_alpha)
+
+	damage_overlay_tween = create_tween()
+	damage_overlay_tween.tween_property(
+		damage_overlay_material,
+		"shader_parameter/flash_alpha",
+		0.0,
+		damage_overlay_fade_duration
+	)
+
 func _on_boss_started(max_hp: float, boss_name: String) -> void:
 	stage_state = StageState.BOSS_FIGHT
 	hide_boss_warning()
@@ -216,6 +337,13 @@ func _on_player_died() -> void:
 	hide_boss_warning()
 	lose_overlay.show_overlay()
 	get_tree().paused = true
+
+func _on_player_damaged(_amount: float) -> void:
+	if game_over:
+		return
+
+	play_damage_camera_shake()
+	play_damage_overlay_flash()
 
 func _on_retry_requested() -> void:
 	Engine.time_scale = 1.0

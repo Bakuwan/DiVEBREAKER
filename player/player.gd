@@ -14,6 +14,7 @@ var current_health: float
 
 signal health_changed(new_health: float, max_health: float)
 signal player_died
+signal player_damaged(amount: float)
 signal weapon_changed(new_weapon: WeaponData)
 signal intro_finished
 
@@ -151,9 +152,14 @@ func take_damage(amount: float):
 	if is_dead:
 		return
 
+	var previous_health := current_health
 	current_health -= amount
 	current_health = max(0, current_health)
-	play_hit_flash()
+	var damage_taken := previous_health - current_health
+	if damage_taken > 0.0:
+		play_hit_flash()
+		player_damaged.emit(damage_taken)
+
 	health_changed.emit(current_health, max_health)
 	
 	if current_health <= 0:

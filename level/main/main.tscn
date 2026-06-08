@@ -104,6 +104,10 @@ bgm_volume_db = -20.0
 boss_dialog_line_gap = 0.1
 player_dialog_offset = Vector2(0, -24)
 boss_dialog_offset = Vector2(0, -24)
+damage_overlay_alpha = 0.3
+damage_overlay_fade_duration = 0.1
+damage_overlay_edge_width = 0.03
+damage_overlay_edge_softness = 0.1
 boss_intro_dialog_lines = Array[String](["...", "I am the one who dives."])
 player_intro_dialog_lines = Array[String](["John FREEDOM DiVE↓?!"])
 
@@ -121,7 +125,7 @@ texture = ExtResource("1_sugp2")
 [node name="Player" parent="." unique_id=1689956804 instance=ExtResource("2_sugp2")]
 unique_name_in_owner = true
 position = Vector2(95, 182)
-hit_flash_color = Color(0.53333336, 0.03137255, 0.03137255, 1)
+hit_flash_color = Color(1, 0, 0, 1)
 
 [node name="EnemySpawner" parent="." unique_id=889596576 instance=ExtResource("3_jyhfs")]
 auto_start = false
