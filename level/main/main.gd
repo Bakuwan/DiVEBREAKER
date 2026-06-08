@@ -35,6 +35,8 @@ void fragment() {
 @export var boss_bgm: AudioStream
 @export var bgm_fade_duration: float = 0.6
 @export var bgm_volume_db: float = -6.0
+@export var warning_sound: AudioStream = preload("res://assets/audio/warning.wav")
+@export var warning_sound_volume_db: float = -3.0
 @export var pre_boss_delay: float = 0.5
 @export var warning_duration: float = 0.5
 @export var boss_clear_duration: float = 1.0
@@ -173,6 +175,7 @@ func start_pre_boss_transition() -> void:
 	player.set_shooting_locked(true)
 	tween_parallax_scroll(BOSS_PARALLAX_SCROLL, 0.5)
 	show_boss_warning("WARNING")
+	play_warning_sound()
 	await get_tree().create_timer(warning_duration, false).timeout
 	spawn_boss()
 
@@ -508,6 +511,17 @@ func play_boss_bgm(immediate: bool = false) -> void:
 		return
 
 	crossfade_bgm(boss_bgm_player, stage_bgm_player, immediate)
+
+func play_warning_sound() -> void:
+	if warning_sound == null:
+		return
+
+	var audio_player := AudioStreamPlayer.new()
+	audio_player.stream = warning_sound
+	audio_player.volume_db = warning_sound_volume_db
+	audio_player.finished.connect(audio_player.queue_free)
+	add_child(audio_player)
+	audio_player.play()
 
 func crossfade_bgm(next_player: AudioStreamPlayer, previous_player: AudioStreamPlayer, immediate: bool = false) -> void:
 	if next_player == null:
