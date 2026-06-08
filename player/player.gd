@@ -16,6 +16,14 @@ class_name PlayerShip
 @export var hurt_sound_volume_db: float = -4.0
 @export var death_sound: AudioStream = preload("res://assets/audio/death_sound.wav")
 @export var death_sound_volume_db: float = -4.0
+@export_category("Damage Particles")
+@export_range(0, 32, 1) var damage_particle_count: int = 10
+@export var damage_particle_color: Color = Color(1.0, 0.05, 0.03, 0.9)
+@export var damage_particle_lifetime: float = 0.28
+@export var damage_particle_speed_min: float = 55.0
+@export var damage_particle_speed_max: float = 125.0
+@export var damage_particle_size_min: float = 2.0
+@export var damage_particle_size_max: float = 5.0
 var current_health: float
 
 signal health_changed(new_health: float, max_health: float)
@@ -164,6 +172,7 @@ func take_damage(amount: float):
 	var damage_taken := previous_health - current_health
 	if damage_taken > 0.0:
 		play_hit_flash()
+		play_damage_particles()
 		play_one_shot_sound(hurt_sound, hurt_sound_volume_db)
 		player_damaged.emit(damage_taken)
 
@@ -356,6 +365,41 @@ func restore_hit_flash_materials() -> void:
 
 		if flash_original_materials.has(sprite):
 			sprite.material = flash_original_materials[sprite]
+
+func play_damage_particles() -> void:
+	if damage_particle_count <= 0 or damage_particle_lifetime <= 0.0:
+		return
+
+	var particle_parent = get_parent()
+	if particle_parent == null:
+		return
+
+	for i in range(damage_particle_count):
+		var particle := Polygon2D.new()
+		var size := randf_range(damage_particle_size_min, damage_particle_size_max)
+		particle.polygon = PackedVector2Array([
+			Vector2(0.0, -size),
+			Vector2(size, 0.0),
+			Vector2(0.0, size),
+			Vector2(-size, 0.0),
+		])
+		particle.color = damage_particle_color
+		particle.z_index = 20
+		particle.rotation = randf_range(0.0, TAU)
+
+		particle_parent.add_child(particle)
+		particle.global_position = global_position
+
+		var direction := Vector2.RIGHT.rotated(randf_range(0.0, TAU))
+		var speed := randf_range(damage_particle_speed_min, damage_particle_speed_max)
+		var target_position := particle.global_position + direction * speed * damage_particle_lifetime
+
+		var tween := particle.create_tween()
+		tween.set_parallel(true)
+		tween.tween_property(particle, "global_position", target_position, damage_particle_lifetime)
+		tween.tween_property(particle, "scale", Vector2.ZERO, damage_particle_lifetime)
+		tween.tween_property(particle, "modulate:a", 0.0, damage_particle_lifetime)
+		tween.chain().tween_callback(particle.queue_free)
 
 func play_one_shot_sound(sound: AudioStream, volume_db: float) -> void:
 	if sound == null:
