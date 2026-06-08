@@ -100,6 +100,7 @@ _data = {
 script = ExtResource("2_y114g")
 stage_bgm = ExtResource("2_ny550")
 boss_bgm = ExtResource("2_mx3v8")
+bgm_volume_db = -20.0
 boss_dialog_line_gap = 0.1
 player_dialog_offset = Vector2(0, -24)
 boss_dialog_offset = Vector2(0, -24)
@@ -131,7 +132,6 @@ position = Vector2(760, 180)
 position = Vector2(500, 180)
 
 [node name="StageBgmPlayer" type="AudioStreamPlayer" parent="." unique_id=181102007]
-volume_db = -10.0
 
 [node name="BossBgmPlayer" type="AudioStreamPlayer" parent="." unique_id=546596114]
 volume_db = -10.0

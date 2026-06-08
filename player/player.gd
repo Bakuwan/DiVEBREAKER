@@ -5,7 +5,8 @@ class_name PlayerShip
 
 @export var max_health: float = 100.0
 @export var hit_flash_duration: float = 0.08
-@export var hit_flash_color: Color = Color(2.0, 2.0, 2.0, 1.0)
+@export var hit_flash_hold_duration: float = 0.05
+@export var hit_flash_color: Color = Color.WHITE
 @export var death_effect_scene: PackedScene
 @export var death_effect_fallback_duration: float = 0.8
 @export var hide_player_visuals_on_death: bool = true
@@ -16,6 +17,18 @@ signal player_died
 signal weapon_changed(new_weapon: WeaponData)
 signal intro_finished
 
+const HIT_FLASH_SHADER_CODE := """
+shader_type canvas_item;
+
+uniform vec4 flash_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float flash_amount : hint_range(0.0, 1.0) = 0.0;
+
+void fragment() {
+	vec4 tex = texture(TEXTURE, UV) * COLOR;
+	COLOR = vec4(mix(tex.rgb, flash_color.rgb, flash_amount), tex.a);
+}
+"""
+
 @export var starting_weapon: WeaponData = preload("res://weapons/gun_single_hitscan.tres")
 @export var weapon_pool: Array[WeaponData]
 @export var intro_entry_speed: float = 280.0
@@ -25,7 +38,9 @@ var fire_timer = 0.0
 var screen_size: Vector2
 var flash_tween: Tween
 var flash_sprites: Array[Sprite2D] = []
-var flash_original_modulates := {}
+var flash_original_materials := {}
+var flash_materials := {}
+var hit_flash_shader: Shader
 var is_dead := false
 var movement_locked := false
 var shooting_locked := false
@@ -266,7 +281,6 @@ func cache_flash_sprites(node: Node) -> void:
 		if child is Sprite2D:
 			var sprite := child as Sprite2D
 			flash_sprites.append(sprite)
-			flash_original_modulates[sprite] = sprite.modulate
 
 		cache_flash_sprites(child)
 
@@ -276,6 +290,7 @@ func play_hit_flash() -> void:
 
 	if flash_tween != null and flash_tween.is_running():
 		flash_tween.kill()
+		restore_hit_flash_materials()
 
 	flash_tween = create_tween()
 
@@ -283,6 +298,46 @@ func play_hit_flash() -> void:
 		if not is_instance_valid(sprite):
 			continue
 
-		var original_modulate: Color = flash_original_modulates.get(sprite, Color.WHITE)
-		sprite.modulate = hit_flash_color
-		flash_tween.parallel().tween_property(sprite, "modulate", original_modulate, hit_flash_duration)
+		if not flash_original_materials.has(sprite):
+			flash_original_materials[sprite] = sprite.material
+
+		var flash_material = get_hit_flash_material(sprite)
+		flash_material.set_shader_parameter("flash_color", hit_flash_color)
+		flash_material.set_shader_parameter("flash_amount", 1.0)
+		sprite.material = flash_material
+
+		flash_tween.parallel() \
+			.tween_property(flash_material, "shader_parameter/flash_amount", 0.0, hit_flash_duration) \
+			.set_delay(hit_flash_hold_duration)
+
+	flash_tween.chain().tween_callback(Callable(self, "restore_hit_flash_materials"))
+
+func get_hit_flash_material(sprite: Sprite2D) -> ShaderMaterial:
+	if flash_materials.has(sprite):
+		return flash_materials[sprite] as ShaderMaterial
+
+	var material := ShaderMaterial.new()
+	material.shader = get_hit_flash_shader()
+	material.set_shader_parameter("flash_color", hit_flash_color)
+	material.set_shader_parameter("flash_amount", 0.0)
+	flash_materials[sprite] = material
+	return material
+
+func get_hit_flash_shader() -> Shader:
+	if hit_flash_shader == null:
+		hit_flash_shader = Shader.new()
+		hit_flash_shader.code = HIT_FLASH_SHADER_CODE
+
+	return hit_flash_shader
+
+func restore_hit_flash_materials() -> void:
+	for sprite in flash_sprites:
+		if not is_instance_valid(sprite):
+			continue
+
+		if flash_materials.has(sprite):
+			var flash_material = flash_materials[sprite] as ShaderMaterial
+			flash_material.set_shader_parameter("flash_amount", 0.0)
+
+		if flash_original_materials.has(sprite):
+			sprite.material = flash_original_materials[sprite]
