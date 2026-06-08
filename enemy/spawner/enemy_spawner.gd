@@ -6,6 +6,7 @@ signal stage_completed
 @export var auto_start: bool = true
 
 var stage_running := false
+var stage_cancelled := false
 var current_wave_id: int = 0
 var active_enemy_ids_by_wave: Dictionary = {}
 
@@ -18,23 +19,34 @@ func run_stage() -> void:
 		return
 
 	stage_running = true
+	stage_cancelled = false
 
 	if stage_data == null:
 		stage_running = false
 		return
 
 	for wave in stage_data.waves:
+		if should_stop_stage():
+			break
 		await execute_wave(wave)
 
 	stage_running = false
-	stage_completed.emit()
+	if not stage_cancelled and is_inside_tree():
+		stage_completed.emit()
+
+func stop_stage() -> void:
+	stage_cancelled = true
+	stage_running = false
+	active_enemy_ids_by_wave.clear()
 
 func execute_wave(wave: EnemySpawnWaveData) -> void:
-	if wave == null:
+	if wave == null or should_stop_stage():
 		return
 
 	if wave.start_delay > 0.0:
-		await get_tree().create_timer(wave.start_delay, false).timeout
+		await wait_seconds(wave.start_delay)
+		if should_stop_stage():
+			return
 
 	if wave.enemy_scene == null:
 		return
@@ -49,9 +61,14 @@ func execute_wave(wave: EnemySpawnWaveData) -> void:
 
 	var last_spawn_delay := 0.0
 	for slot in active_slots:
+		if should_stop_stage():
+			return
+
 		var wait_time = slot.spawn_delay_from_wave_start - last_spawn_delay
 		if wait_time > 0.0:
-			await get_tree().create_timer(wait_time, false).timeout
+			await wait_seconds(wait_time)
+			if should_stop_stage():
+				return
 
 		spawn_enemy_for_slot(wave_id, wave.enemy_scene, slot)
 		last_spawn_delay = slot.spawn_delay_from_wave_start
@@ -70,6 +87,9 @@ func get_sorted_enabled_slots(wave: EnemySpawnWaveData) -> Array[EnemySpawnSlotD
 	return enabled_slots
 
 func spawn_enemy_for_slot(wave_id: int, enemy_scene: PackedScene, slot: EnemySpawnSlotData) -> void:
+	if should_stop_stage():
+		return
+
 	var enemy = enemy_scene.instantiate()
 	add_child(enemy)
 
@@ -90,6 +110,9 @@ func wait_for_wave_clear(wave_id: int, clear_timeout: float) -> void:
 	var elapsed := 0.0
 
 	while true:
+		if should_stop_stage():
+			return
+
 		var active_enemy_ids: Dictionary = active_enemy_ids_by_wave.get(wave_id, {})
 		if active_enemy_ids.is_empty():
 			return
@@ -99,6 +122,16 @@ func wait_for_wave_clear(wave_id: int, clear_timeout: float) -> void:
 
 		await get_tree().process_frame
 		elapsed += get_process_delta_time()
+
+func wait_seconds(duration: float) -> void:
+	var tree = get_tree()
+	if tree == null:
+		return
+
+	await tree.create_timer(duration, false).timeout
+
+func should_stop_stage() -> bool:
+	return stage_cancelled or not stage_running or not is_inside_tree() or get_tree() == null
 
 func _on_wave_enemy_exited(wave_id: int, enemy_id: int) -> void:
 	if not active_enemy_ids_by_wave.has(wave_id):

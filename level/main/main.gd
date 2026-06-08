@@ -160,6 +160,10 @@ func has_remaining_enemies() -> bool:
 
 	return false
 
+func stop_enemy_spawner() -> void:
+	if enemy_spawner != null and enemy_spawner.has_method("stop_stage"):
+		enemy_spawner.stop_stage()
+
 func start_pre_boss_transition() -> void:
 	stage_state = StageState.PRE_BOSS
 
@@ -332,6 +336,7 @@ func _on_player_died() -> void:
 
 	game_over = true
 	stage_state = StageState.BOSS_CLEAR
+	stop_enemy_spawner()
 	stop_all_bgm()
 	boss_health_bar.visible = false
 	hide_boss_warning()
@@ -348,12 +353,14 @@ func _on_player_damaged(_amount: float) -> void:
 func _on_retry_requested() -> void:
 	Engine.time_scale = 1.0
 	get_tree().paused = false
+	stop_enemy_spawner()
 	stop_all_bgm()
 	get_tree().reload_current_scene()
 
 func _on_main_menu_requested() -> void:
 	Engine.time_scale = 1.0
 	get_tree().paused = false
+	stop_enemy_spawner()
 	stop_all_bgm()
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
 
