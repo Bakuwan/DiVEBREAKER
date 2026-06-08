@@ -172,13 +172,14 @@ func combat(delta: float) -> void:
 
 		execute_phase_two_attack()
 
-func take_damage(amount: float = 1.0):
+func take_damage(amount: float = 1.0, hit_sound_override: AudioStream = null):
 	if defeat_active or spawn_invulnerability_active or bullet_hell_invulnerable or not intro_complete or not combat_enabled:
 		return
 
 	hp -= amount
 	current_hp = max(hp, 0.0)
 	play_hit_flash()
+	play_hit_sound(hit_sound_override)
 	update_phase()
 	boss_health_changed.emit(current_hp, max_hp)
 

@@ -19,6 +19,12 @@ class_name BaseEnemy
 @export_category("Death Effect")
 @export var death_effect_scene: PackedScene = preload("res://enemy/base/enemy_death_effect.tscn")
 
+@export_category("Audio")
+@export var hit_sound: AudioStream = preload("res://assets/audio/weapon_hitsound.ogg")
+@export var hit_sound_volume_db: float = -6.0
+@export var hit_sound_pitch_min: float = 0.94
+@export var hit_sound_pitch_max: float = 1.06
+
 const HIT_FLASH_SHADER_CODE := """
 shader_type canvas_item;
 
@@ -84,12 +90,13 @@ func move(delta):
 func combat(_delta):
 	pass
 
-func take_damage(amount: float = 1.0):
+func take_damage(amount: float = 1.0, hit_sound_override: AudioStream = null):
 	if spawn_invulnerability_active:
 		return
 
 	hp -= amount
 	play_hit_flash()
+	play_hit_sound(hit_sound_override)
 	if hp <= 0:
 		die()
 
@@ -215,6 +222,31 @@ func restore_hit_flash_materials() -> void:
 
 		if flash_original_materials.has(sprite):
 			sprite.material = flash_original_materials[sprite]
+
+func play_hit_sound(sound_override: AudioStream = null) -> void:
+	var sound := sound_override if sound_override != null else hit_sound
+	if sound == null:
+		return
+
+	var playback_parent: Node = get_parent()
+	if playback_parent == null:
+		playback_parent = get_tree().current_scene
+
+	if playback_parent == null:
+		return
+
+	var audio_player := AudioStreamPlayer2D.new()
+	audio_player.stream = sound
+	audio_player.volume_db = hit_sound_volume_db
+	audio_player.pitch_scale = randf_range(
+		minf(hit_sound_pitch_min, hit_sound_pitch_max),
+		maxf(hit_sound_pitch_min, hit_sound_pitch_max)
+	)
+	audio_player.finished.connect(audio_player.queue_free)
+
+	playback_parent.add_child(audio_player)
+	audio_player.global_position = global_position
+	audio_player.play()
 
 func is_fully_inside_viewport() -> bool:
 	var visible_rect = get_viewport_rect()

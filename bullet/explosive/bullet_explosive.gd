@@ -5,6 +5,7 @@ extends Area2D
 @export var explosion_damage: float = 5
 @export var explosion_radius: float = 100.0
 @export var explosion_effect_scene: PackedScene = preload("res://bullet/explosive/explosion_effect.tscn")
+@export var hit_sound: AudioStream = preload("res://assets/audio/explosion_hitsound.ogg")
 @export var viewport_margin: float = 32.0
 
 var direction: Vector2 = Vector2.RIGHT
@@ -26,7 +27,7 @@ func _on_area_entered(area: Area2D) -> void:
 		return
 
 	if area.has_method("take_damage"):
-		area.take_damage(impact_damage)
+		area.take_damage(impact_damage, hit_sound)
 
 	explode(area)
 
@@ -68,7 +69,7 @@ func damage_enemies_in_radius(primary_target: Area2D = null) -> void:
 			continue
 
 		if enemy_area.has_method("take_damage"):
-			enemy_area.take_damage(explosion_damage)
+			enemy_area.take_damage(explosion_damage, hit_sound)
 
 func is_outside_visible_viewport() -> bool:
 	var screen_position = get_global_transform_with_canvas().origin
