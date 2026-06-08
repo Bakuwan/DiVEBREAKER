@@ -31,6 +31,8 @@ radius = 15.033297
 script = ExtResource("1_g2els")
 speed = 200.0
 death_effect_scene = ExtResource("2_s7qer")
+death_effect_fallback_duration = 10.0
+death_effect_loop_count = 5
 weapon_pool = Array[ExtResource("2_8t03j")]([ExtResource("2_qhqgy"), ExtResource("8_newgun"), ExtResource("5_tuyoq"), ExtResource("4_tuyoq"), ExtResource("9_pierce_single"), ExtResource("10_pierce_triple"), ExtResource("11_homing_single"), ExtResource("12_homing_triple"), ExtResource("13_explosive_single"), ExtResource("14_explosive_triple"), ExtResource("15_burst_hitscan"), ExtResource("16_burst_projectile"), ExtResource("17_burst_piercing"), ExtResource("18_wave_hitscan"), ExtResource("2_wodsf"), ExtResource("19_wave_piercing"), ExtResource("20_five_hitscan"), ExtResource("21_five_projectile"), ExtResource("22_five_piercing")])
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1430389495]

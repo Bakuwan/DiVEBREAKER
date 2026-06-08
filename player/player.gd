@@ -9,12 +9,13 @@ class_name PlayerShip
 @export var hit_flash_color: Color = Color.WHITE
 @export var death_effect_scene: PackedScene
 @export var death_effect_fallback_duration: float = 0.8
+@export_range(1, 12, 1) var death_effect_loop_count: int = 1
 @export var hide_player_visuals_on_death: bool = true
 @export_category("Audio")
 @export var hurt_sound: AudioStream = preload("res://assets/audio/hurt_sound.wav")
 @export var hurt_sound_volume_db: float = -4.0
 @export var death_sound: AudioStream = preload("res://assets/audio/death_sound.wav")
-@export var death_sound_volume_db: float = -2.0
+@export var death_sound_volume_db: float = -4.0
 var current_health: float
 
 signal health_changed(new_health: float, max_health: float)
@@ -215,24 +216,26 @@ func spawn_death_effect() -> Node:
 	return death_effect
 
 func get_death_sequence_duration(death_effect: Node) -> float:
+	var loop_count = max(death_effect_loop_count, 1)
+
 	if death_effect != null:
 		if death_effect.has_method("get_duration"):
 			var custom_duration = float(death_effect.get_duration())
 			if custom_duration > 0.0:
-				return custom_duration
+				return custom_duration * loop_count
 
 		if "duration" in death_effect:
 			var exported_duration = float(death_effect.duration)
 			if exported_duration > 0.0:
-				return exported_duration
+				return exported_duration * loop_count
 
 		var animated_sprite = find_first_animated_sprite(death_effect)
 		if animated_sprite != null:
 			var animation_duration = get_animated_sprite_duration(animated_sprite)
 			if animation_duration > 0.0:
-				return animation_duration
+				return animation_duration * loop_count
 
-	return death_effect_fallback_duration
+	return death_effect_fallback_duration * loop_count
 
 func configure_death_effect_animation(death_effect: Node) -> void:
 	var animated_sprite = find_first_animated_sprite(death_effect)
@@ -243,9 +246,8 @@ func configure_death_effect_animation(death_effect: Node) -> void:
 	if animation_name == StringName():
 		animation_name = &"default"
 
-	if animated_sprite.sprite_frames != null and animated_sprite.sprite_frames.has_animation(animation_name):
-		animated_sprite.sprite_frames.set_animation_loop(animation_name, false)
-
+	animated_sprite.frame = 0
+	animated_sprite.frame_progress = 0.0
 	animated_sprite.play(animation_name)
 
 func find_first_animated_sprite(node: Node) -> AnimatedSprite2D:
