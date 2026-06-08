@@ -596,7 +596,7 @@ func reset_bullet_hell_invulnerability_visual() -> void:
 	for sprite in flash_sprites:
 		if not is_instance_valid(sprite):
 			continue
-		var original_modulate: Color = flash_original_modulates.get(sprite, Color.WHITE)
+		var original_modulate: Color = sprite_original_modulates.get(sprite, Color.WHITE)
 		sprite.modulate = original_modulate
 
 func fire_spread_shot(projectile_count: int, angle_step: float) -> void:

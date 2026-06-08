@@ -121,6 +121,7 @@ texture = ExtResource("1_sugp2")
 [node name="Player" parent="." unique_id=1689956804 instance=ExtResource("2_sugp2")]
 unique_name_in_owner = true
 position = Vector2(95, 182)
+hit_flash_color = Color(0.53333336, 0.03137255, 0.03137255, 1)
 
 [node name="EnemySpawner" parent="." unique_id=889596576 instance=ExtResource("3_jyhfs")]
 auto_start = false
