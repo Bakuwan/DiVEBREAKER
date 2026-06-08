@@ -8,6 +8,8 @@ signal boss_intro_finished
 signal boss_defeat_started()
 signal boss_defeat_finished()
 
+const BOSS_PROJECTILE_GROUP := "boss_projectile"
+
 @export_category("Boss Identity")
 @export var boss_name: String = "when the dive is freedom"
 @export var max_hp: float = 80.0
@@ -195,6 +197,7 @@ func die():
 	special_attack_active = false
 	bullet_hell_invulnerable = false
 	reset_bullet_hell_invulnerability_visual()
+	clear_boss_projectiles()
 	register_enemy_kill()
 
 	if collision_shape != null:
@@ -621,6 +624,7 @@ func spawn_attack_bullet(scene: PackedScene, direction: Vector2, projectile_spee
 		return null
 
 	var projectile = scene.instantiate()
+	projectile.add_to_group(BOSS_PROJECTILE_GROUP)
 	get_parent().add_child(projectile)
 
 	if projectile is Node2D:
@@ -634,6 +638,11 @@ func spawn_attack_bullet(scene: PackedScene, direction: Vector2, projectile_spee
 		projectile.speed = projectile_speed
 
 	return projectile
+
+func clear_boss_projectiles() -> void:
+	for projectile in get_tree().get_nodes_in_group(BOSS_PROJECTILE_GROUP):
+		if is_instance_valid(projectile):
+			projectile.queue_free()
 
 func get_direction_to_player() -> Vector2:
 	if is_instance_valid(target_player):
